@@ -230,3 +230,33 @@ async function connect() {
       );
       res.send(result);
     });
+    app.put("/updateSeller/:email", varifySecret, async (req, res) => {
+      const email = req.params.email;
+      const filter = { email: email };
+      const updateProduct = req.body;
+      const option = { upsert: true };
+      const updateproduct = {
+        $set: {
+          verified: updateProduct.verified,
+        },
+      };
+      const result = await productCollections.updateMany(
+        filter,
+        updateproduct,
+        option
+      );
+      res.send(result);
+    });
+
+    app.delete("/seller-product-delete/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await productCollections.deleteOne(query);
+      res.send(result);
+    });
+    app.delete("/report-info-delete/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await ReportCollections.deleteOne(query);
+      res.send(result);
+    });
