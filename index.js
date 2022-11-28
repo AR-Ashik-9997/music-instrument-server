@@ -58,3 +58,25 @@ async function connect() {
       .db("Used-Resell-Market")
       .collection("Payments");
 
+      app.post("/jwt", (req, res) => {
+        const user = req.body;
+        const token = jwt.sign(user, process.env.Secrete_Token, {
+          expiresIn: "1day",
+        });
+        res.send({ token });
+      });
+  
+      app.get("/all-Category-data-find", async (req, res) => {
+        const query = { name: req.query.name };
+        const result = await categoryCollections.find(query).toArray();
+        res.send(result);
+      });
+  
+      app.get("/cardCategory", async (req, res) => {
+        const result = await categoryCollections.find({}).limit(3).toArray();
+        res.send(result);
+      });
+      app.get("/allCategory", async (req, res) => {
+        const result = await categoryCollections.find({}).toArray();
+        res.send(result);
+      });
