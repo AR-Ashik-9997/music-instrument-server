@@ -136,13 +136,22 @@ async function connect() {
     app.post("/paymentInfo-stored", varifySecret, async (req, res) => {
       const paymentInfo = req.body;
       const result = await PaymentCollections.insertOne(paymentInfo);
+      const bookId = paymentInfo.bookingId;
       const id = paymentInfo.productId;
       const filter = { _id: ObjectId(id) };
+      const bookFilter = { _id: ObjectId(bookId) };
+      const updateBook = {
+        $set: {
+          status: paymentInfo.status,
+        },
+      };
+      const updatebookResult = await BookingCollections.updateOne(bookFilter, updateBook);
       const update = {
         $set: {
           status: paymentInfo.status,
         },
       };
+      
       const updateResult = await productCollections.updateOne(filter, update);
       res.send(result);
     });
@@ -189,12 +198,7 @@ async function connect() {
       const result = await RegisterCollections.find(query).toArray();
       res.send(result);
     });
-    app.get("/checkpayment", async (req, res) => {
-      const email= req.query.email;
-      const query = {email: email};
-      const result = await PaymentCollections.findOne( query);
-      res.send(result);
-    });
+    
     app.put("/update-advertisement/:id", async (req, res) => {
       const id = req.params.id;
       const filter = { _id: ObjectId(id) };
