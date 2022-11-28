@@ -33,3 +33,28 @@ function varifySecret(req, res, next) {
 }
 
 
+async function connect() {
+  try {
+    const categoryCollections = client
+      .db("Used-Resell-Market")
+      .collection("Categories");
+
+    const productCollections = client
+      .db("Used-Resell-Market")
+      .collection("Product");
+
+    const BookingCollections = client
+      .db("Used-Resell-Market")
+      .collection("bookingProducts");
+
+    const ReportCollections = client
+      .db("Used-Resell-Market")
+      .collection("ReportedProduct");
+
+    const RegisterCollections = client
+      .db("Used-Resell-Market")
+      .collection("Register");
+    const PaymentCollections = client
+      .db("Used-Resell-Market")
+      .collection("Payments");
+
