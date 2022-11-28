@@ -112,3 +112,37 @@ async function connect() {
         const result = await cursor.toArray();
         res.send(result);
       });
+       
+    app.get("/payment/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await BookingCollections.findOne(query);
+      res.send(result);
+    });
+    app.post("/create-payment-intent", varifySecret, async (req, res) => {
+      const booking = req.body;
+      const price = booking.sellPrice;
+      const amount = price * 100;
+
+      const paymentIntent = await stripe.paymentIntents.create({
+        currency: "usd",
+        amount: amount,
+        payment_method_types: ["card"],
+      });
+      res.send({
+        clientSecret: paymentIntent.client_secret,
+      });
+    });
+    app.post("/paymentInfo-stored", varifySecret, async (req, res) => {
+      const paymentInfo = req.body;
+      const result = await PaymentCollections.insertOne(paymentInfo);
+      const id = paymentInfo.productId;
+      const filter = { _id: ObjectId(id) };
+      const update = {
+        $set: {
+          status: paymentInfo.status,
+        },
+      };
+      const updateResult = await productCollections.updateOne(filter, update);
+      res.send(result);
+    });
