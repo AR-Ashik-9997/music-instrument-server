@@ -146,3 +146,52 @@ async function connect() {
       const updateResult = await productCollections.updateOne(filter, update);
       res.send(result);
     });
+    app.get("/advertiseProduct", async (req, res) => {
+      const result = await productCollections
+        .find({ status: "Available", addvertise: "true" })
+        .toArray();
+      res.send(result);
+    });
+    app.get("/orderInfo", varifySecret, async (req, res) => {
+      const query = { buyerEmail: req.query.email };
+      const result = await BookingCollections.find(query).toArray();
+      res.send(result);
+    });
+    app.post("/bookingProducts", async (req, res) => {
+      const booking = req.body;
+      const result = await BookingCollections.insertOne(booking);
+      res.send(result);
+    });
+    app.post("/AddProduct", async (req, res) => {
+      const booking = req.body;
+      const result = await productCollections.insertOne(booking);
+      res.send(result);
+    });
+
+    app.post("/AddCategory", async (req, res) => {
+      const booking = req.body;
+      const result = await categoryCollections.insertOne(booking);
+      res.send(result);
+    });
+
+    app.post("/AddReport", async (req, res) => {
+      const report = req.body;
+      const result = await ReportCollections.insertOne(report);
+      res.send(result);
+    });
+    app.post("/AddRegister", async (req, res) => {
+      const register = req.body;
+      const result = await RegisterCollections.insertOne(register);
+      res.send(result);
+    });
+    app.get("/checkRegister", varifySecret, async (req, res) => {
+      const query = { email: req.query.email };
+      const result = await RegisterCollections.find(query).toArray();
+      res.send(result);
+    });
+    app.get("/checkpayment", async (req, res) => {
+      const email= req.query.email;
+      const query = {email: email};
+      const result = await PaymentCollections.findOne( query);
+      res.send(result);
+    });
