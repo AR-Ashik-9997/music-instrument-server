@@ -195,3 +195,38 @@ async function connect() {
       const result = await PaymentCollections.findOne( query);
       res.send(result);
     });
+    app.put("/update-advertisement/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: ObjectId(id) };
+      const updateProduct = req.body;
+      const option = { upsert: true };
+      const updateproduct = {
+        $set: {
+          addvertise: updateProduct.advertise,
+        },
+      };
+      const result = await productCollections.updateOne(
+        filter,
+        updateproduct,
+        option
+      );
+      res.send(result);
+    });
+
+    app.put("/varyfySeller/:id", varifySecret, async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: ObjectId(id) };
+      const updateProduct = req.body;
+      const option = { upsert: true };
+      const updateproduct = {
+        $set: {
+          verified: updateProduct.verified,
+        },
+      };
+      const result = await RegisterCollections.updateOne(
+        filter,
+        updateproduct,
+        option
+      );
+      res.send(result);
+    });
