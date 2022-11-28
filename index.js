@@ -80,3 +80,35 @@ async function connect() {
         const result = await categoryCollections.find({}).toArray();
         res.send(result);
       });
+      app.get("/sellerProduct", varifySecret, async (req, res) => {
+        const query = { email: req.query.email };
+        const result = await productCollections.find(query).toArray();
+        res.send(result);
+      });
+      app.get("/allbuyer", async (req, res) => {
+        const query = { role: req.query.role };
+        const result = await RegisterCollections.find(query).toArray();
+        res.send(result);
+      });
+      app.get("/allseller", async (req, res) => {
+        const query = { role: req.query.role };
+        const result = await RegisterCollections.find(query).toArray();
+        res.send(result);
+      });
+      app.get("/access/:email", varifySecret, async (req, res) => {
+        const email = req.params.email;
+        const query = { email };
+        const result = await RegisterCollections.findOne(query);
+        res.send(result);
+      });
+      app.get("/reportInfo", async (req, res) => {
+        const result = await ReportCollections.find({}).toArray();
+        res.send(result);
+      });
+      app.get("/cardProduct/:id", async (req, res) => {
+        const categoryId = req.params.id;
+        const query = { categoryId: categoryId };
+        const cursor = productCollections.find(query);
+        const result = await cursor.toArray();
+        res.send(result);
+      });
