@@ -107,7 +107,7 @@ async function connect() {
       });
       app.get("/cardProduct/:id", async (req, res) => {
         const categoryId = req.params.id;
-        const query = { categoryId: categoryId };
+        const query = { categoryId: categoryId,status:"Available" };
         const cursor = productCollections.find(query);
         const result = await cursor.toArray();
         res.send(result);
