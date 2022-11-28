@@ -260,3 +260,24 @@ async function connect() {
       const result = await ReportCollections.deleteOne(query);
       res.send(result);
     });
+    
+    app.delete("/buyer-info-delete/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await RegisterCollections.deleteOne(query);
+      res.send(result);
+    });
+    app.delete("/seller-info-delete/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await RegisterCollections.deleteOne(query);
+      res.send(result);
+    });
+  } finally {
+  }
+}
+connect().catch((err) => console.log(err));
+
+app.listen(port, () => {
+  console.log(`Server listening on port ${port}`);
+});
